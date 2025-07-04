@@ -6,8 +6,5 @@ members = [
     "crates/triage",
     "crates/scheduler",
     "crates/utils",
-    "fake_malware",
-    "edr_test_harness",
-    "edr_kernel_evasion_test",
-    "edr_ultimate_orchestrator"
+    "bench"
 ]

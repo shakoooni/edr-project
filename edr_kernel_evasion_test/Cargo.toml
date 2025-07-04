@@ -1,7 +1,0 @@
-[package]
-name = "edr_kernel_evasion_test"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-libc = "0.2"

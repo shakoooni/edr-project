@@ -180,6 +180,16 @@ pub mod linux {
         }
     }
 
+    impl LinuxScanner {
+        /// Publicly expose process listing for use in agent
+        pub fn list_processes() -> Result<Vec<ProcessInfo>, ProcessScanError> {
+            <Self as MemoryScanner>::list_processes()
+        }
+        pub fn scan_memory(pid: u32) -> Result<Vec<MemoryRegion>, ProcessScanError> {
+            <Self as MemoryScanner>::scan_memory(pid)
+        }
+    }
+
     /// Scan and analyze all memory regions for a process, returning analysis results.
     pub fn scan_and_analyze(pid: u32) -> Result<Vec<(MemoryRegion, RegionAnalysis)>, ProcessScanError> {
         let regions = LinuxScanner::scan_memory(pid)?;

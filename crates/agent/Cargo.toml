@@ -28,6 +28,3 @@ tempfile = "3"
 
 criterion = "0.5"
 
-[[bin]]
-name = "quick_bench"
-path = "src/quick_bench.rs"
