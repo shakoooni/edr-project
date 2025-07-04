@@ -1,19 +1,35 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use sha2::{Sha256, Digest};
-use std::fs::File;
-use std::io::{Write, Read};
+use std::io::Write;
 use tempfile::NamedTempFile;
 
 // Benchmark config integrity check
 fn bench_config_integrity(c: &mut Criterion) {
     let data = vec![0xAB; 4096];
-    let mut tmp = NamedTempFile::new().unwrap();
-    tmp.as_file_mut().write_all(&data).unwrap();
+    let mut tmp = match NamedTempFile::new() {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("[ERROR] Failed to create temp file: {e}");
+            return;
+        }
+    };
+    if let Err(e) = tmp.as_file_mut().write_all(&data) {
+        eprintln!("[ERROR] Failed to write to temp file: {e}");
+        return;
+    }
     let hash = Sha256::digest(&data);
-    let path = tmp.path().to_str().unwrap().to_string();
+    let path = match tmp.path().to_str() {
+        Some(p) => p.to_string(),
+        None => {
+            eprintln!("[ERROR] Temp file path is not valid UTF-8");
+            return;
+        }
+    };
     c.bench_function("config_integrity_check", |b| {
         b.iter(|| {
-            let _ = std::fs::read(&path).map(|d| Sha256::digest(&d) == hash);
+            if let Ok(d) = std::fs::read(&path) {
+                let _ = Sha256::digest(&d) == hash;
+            }
         });
     });
 }
@@ -21,13 +37,30 @@ fn bench_config_integrity(c: &mut Criterion) {
 // Benchmark binary integrity check
 fn bench_binary_integrity(c: &mut Criterion) {
     let data = vec![0xCD; 4096];
-    let mut tmp = NamedTempFile::new().unwrap();
-    tmp.as_file_mut().write_all(&data).unwrap();
+    let mut tmp = match NamedTempFile::new() {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("[ERROR] Failed to create temp file: {e}");
+            return;
+        }
+    };
+    if let Err(e) = tmp.as_file_mut().write_all(&data) {
+        eprintln!("[ERROR] Failed to write to temp file: {e}");
+        return;
+    }
     let hash = Sha256::digest(&data);
-    let path = tmp.path().to_str().unwrap().to_string();
+    let path = match tmp.path().to_str() {
+        Some(p) => p.to_string(),
+        None => {
+            eprintln!("[ERROR] Temp file path is not valid UTF-8");
+            return;
+        }
+    };
     c.bench_function("binary_integrity_check", |b| {
         b.iter(|| {
-            let _ = std::fs::read(&path).map(|d| Sha256::digest(&d) == hash);
+            if let Ok(d) = std::fs::read(&path) {
+                let _ = Sha256::digest(&d) == hash;
+            }
         });
     });
 }

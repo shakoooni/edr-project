@@ -114,8 +114,6 @@ pub mod linux {
     use super::*;
     use std::fs;
     use std::io::{BufRead, BufReader};
-    use std::path::Path;
-    use std::fs::OpenOptions;
 
     /// Read a memory region from /proc/[pid]/mem (Linux only).
 
@@ -131,9 +129,10 @@ pub mod linux {
                 let file_name = entry.file_name();
                 if let Ok(pid) = file_name.to_string_lossy().parse::<u32>() {
                     let cmdline_path = format!("/proc/{}/comm", pid);
-                    let name = fs::read_to_string(&cmdline_path)
-                        .unwrap_or_else(|_| "unknown".to_string())
-                        .trim().to_string();
+                    let name = match fs::read_to_string(&cmdline_path) {
+                        Ok(n) => n.trim().to_string(),
+                        Err(_) => "unknown".to_string(),
+                    };
                     procs.push(ProcessInfo { pid, name });
                 }
             }
@@ -160,8 +159,14 @@ pub mod linux {
                 let _inode = parts.next();
                 let file_path = parts.next().map(|s| s.to_string());
                 let mut addr_parts = addr.split('-');
-                let start = u64::from_str_radix(addr_parts.next().unwrap_or("0"), 16).unwrap_or(0);
-                let end = u64::from_str_radix(addr_parts.next().unwrap_or("0"), 16).unwrap_or(0);
+                let start = match addr_parts.next() {
+                    Some(s) => u64::from_str_radix(s, 16).unwrap_or(0),
+                    None => 0,
+                };
+                let end = match addr_parts.next() {
+                    Some(s) => u64::from_str_radix(s, 16).unwrap_or(0),
+                    None => 0,
+                };
                 let is_anonymous = file_path.is_none();
                 regions.push(MemoryRegion {
                     start,

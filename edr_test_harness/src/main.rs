@@ -13,7 +13,11 @@ use std::ffi::CString;
 fn set_process_name(name: &str) {
     use libc::prctl;
     const PR_SET_NAME: libc::c_int = 15;
-    let cname = CString::new(name).unwrap_or_default();
+    let cname = match CString::new(name) {
+        Ok(c) => c,
+        Err(_) => return,
+    };
+    // Safety: name is validated, prctl is called with valid args
     unsafe {
         prctl(PR_SET_NAME, cname.as_ptr() as usize, 0, 0, 0);
     }
@@ -28,7 +32,10 @@ fn random_name() -> String {
         "[systemd]", "[dbus-daemon]", "[sshd]", "[bash]", "[Xorg]",
         "[udevd]", "[irq/16-ehci_hcd]", "[watchdog/0]", "[jbd2/sda1-8]", "[ext4-rsv-conver]"
     ];
-    names.choose(&mut rand::thread_rng()).unwrap().to_string()
+    match names.choose(&mut rand::thread_rng()) {
+        Some(n) => n.to_string(),
+        None => "[kworker/u:0]".to_string(),
+    }
 }
 
 fn main() {
@@ -87,8 +94,20 @@ fn main() {
         let running = running.clone();
         move || {
             use libc::{dlopen, dlclose, RTLD_NOW};
-            let exe = std::env::current_exe().unwrap();
-            let cexe = CString::new(exe.to_str().unwrap()).unwrap();
+            let exe = match std::env::current_exe() {
+                Ok(e) => e,
+                Err(e) => {
+                    eprintln!("[ERROR] Could not get current exe: {e}");
+                    return;
+                }
+            };
+            let cexe = match exe.to_str().and_then(|s| CString::new(s).ok()) {
+                Some(c) => c,
+                None => {
+                    eprintln!("[ERROR] Could not convert exe path to CString");
+                    return;
+                }
+            };
             while running.load(Ordering::Relaxed) {
                 unsafe {
                     let handle = dlopen(cexe.as_ptr(), RTLD_NOW);
@@ -110,7 +129,10 @@ fn main() {
             let mut ids = vec![];
             for i in 0..file_count {
                 let name = format!("/edrtestshm_{}", i);
-                let cname = CString::new(name.clone()).unwrap();
+                let cname = match CString::new(name.clone()) {
+                    Ok(c) => c,
+                    Err(_) => continue,
+                };
                 unsafe {
                     let fd = shm_open(cname.as_ptr(), O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
                     if fd >= 0 {
@@ -125,7 +147,9 @@ fn main() {
             for (fd, name) in ids {
                 unsafe {
                     libc::close(fd);
-                    shm_unlink(CString::new(name).unwrap().as_ptr());
+                    if let Ok(cname) = CString::new(name) {
+                        shm_unlink(cname.as_ptr());
+                    }
                 }
             }
         }

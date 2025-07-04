@@ -61,13 +61,19 @@ fn main() {
         .find(|l| l.trim_start().starts_with("scan_interval_seconds"))
         .and_then(|l| l.split('=').nth(1))
         .and_then(|v| v.trim().parse::<u64>().ok())
-        .unwrap_or(60);
+        .unwrap_or_else(|| {
+            eprintln!("[WARN] scan_interval_seconds not found or invalid, defaulting to 60");
+            60
+        });
     let log_path = config
         .lines()
         .find(|l| l.trim_start().starts_with("log_path"))
         .and_then(|l| l.split('=').nth(1))
         .map(|v| v.trim().trim_matches('"').to_string())
-        .unwrap_or_else(|| "../logs/edr.log".to_string());
+        .unwrap_or_else(|| {
+            eprintln!("[WARN] log_path not found, defaulting to ../logs/edr.log");
+            "../logs/edr.log".to_string()
+        });
 
     // Self-integrity check
     const EXPECTED_HASH: Option<&str> = None;

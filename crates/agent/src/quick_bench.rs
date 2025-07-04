@@ -6,26 +6,60 @@ use std::io::Write;
 fn main() {
     // Config integrity check
     let data = vec![0xAB; 4096];
-    let mut tmp = NamedTempFile::new().unwrap();
-    tmp.as_file_mut().write_all(&data).unwrap();
+    let mut tmp = match NamedTempFile::new() {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("[ERROR] Failed to create temp file: {e}");
+            return;
+        }
+    };
+    if let Err(e) = tmp.as_file_mut().write_all(&data) {
+        eprintln!("[ERROR] Failed to write to temp file: {e}");
+        return;
+    }
     let hash = Sha256::digest(&data);
-    let path = tmp.path().to_str().unwrap().to_string();
+    let path = match tmp.path().to_str() {
+        Some(p) => p.to_string(),
+        None => {
+            eprintln!("[ERROR] Temp file path is not valid UTF-8");
+            return;
+        }
+    };
     let start = Instant::now();
     for _ in 0..10_000 {
-        let _ = std::fs::read(&path).map(|d| Sha256::digest(&d) == hash);
+        if let Ok(d) = std::fs::read(&path) {
+            let _ = Sha256::digest(&d) == hash;
+        }
     }
     let elapsed = start.elapsed();
     println!("Config integrity: 10,000 checks in {:?} (avg: {:?} per op)", elapsed, elapsed/10_000);
 
     // Binary integrity check
     let data = vec![0xCD; 4096];
-    let mut tmp = NamedTempFile::new().unwrap();
-    tmp.as_file_mut().write_all(&data).unwrap();
+    let mut tmp = match NamedTempFile::new() {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("[ERROR] Failed to create temp file: {e}");
+            return;
+        }
+    };
+    if let Err(e) = tmp.as_file_mut().write_all(&data) {
+        eprintln!("[ERROR] Failed to write to temp file: {e}");
+        return;
+    }
     let hash = Sha256::digest(&data);
-    let path = tmp.path().to_str().unwrap().to_string();
+    let path = match tmp.path().to_str() {
+        Some(p) => p.to_string(),
+        None => {
+            eprintln!("[ERROR] Temp file path is not valid UTF-8");
+            return;
+        }
+    };
     let start = Instant::now();
     for _ in 0..10_000 {
-        let _ = std::fs::read(&path).map(|d| Sha256::digest(&d) == hash);
+        if let Ok(d) = std::fs::read(&path) {
+            let _ = Sha256::digest(&d) == hash;
+        }
     }
     let elapsed = start.elapsed();
     println!("Binary integrity: 10,000 checks in {:?} (avg: {:?} per op)", elapsed, elapsed/10_000);

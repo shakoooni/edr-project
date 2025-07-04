@@ -39,8 +39,16 @@ impl Scheduler {
             let now = chrono::Utc::now().timestamp() as u64;
             while let Some(Reverse(job)) = self.queue.peek() {
                 if job.run_at <= now {
-                    let job = self.queue.pop().unwrap().0;
-                    // TODO: dispatch job
+                    match self.queue.pop() {
+                        Some(rj) => {
+                            // TODO: dispatch job
+                            let _ = rj.0;
+                        },
+                        None => {
+                            eprintln!("[ERROR] Scheduler queue pop failed unexpectedly");
+                            break;
+                        }
+                    }
                 } else {
                     break;
                 }
