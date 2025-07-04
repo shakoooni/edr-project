@@ -1,0 +1,9 @@
+[package]
+name = "scheduler"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+utils = { path = "../utils" }
+chrono = "0.4"

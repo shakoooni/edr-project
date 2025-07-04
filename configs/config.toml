@@ -1,0 +1,4 @@
+# ultra_edr config.toml
+scan_interval_seconds = 60
+risk_threshold = 80
+log_path = "../logs/edr.log"

@@ -1,0 +1,46 @@
+# Advanced EDR Feature Roadmap
+
+1. Kernel-Level Integration
+   - Kernel module for memory scanning and anti-rootkit (detect hidden processes, kernel hooks)
+   - eBPF-based stealth monitoring
+
+2. Advanced Stealth
+   - In-memory execution (no on-disk agent)
+   - Polymorphic process names and binary hashes
+   - Hide open file descriptors and memory maps from /proc
+
+3. Resilience & Self-Defense
+   - Watchdog process to restart agent if killed
+   - Binary self-repair or auto-update (signed updates)
+   - Anti-uninstall and anti-tamper hooks
+
+4. Detection & Response
+   - Real-time behavioral monitoring (syscall tracing, process tree analysis)
+   - Memory anomaly detection using ML
+   - Automated response: kill/quarantine process, carve and encrypt memory, alert operator
+
+5. Forensics & Triage
+   - Timeline of memory region changes (diff snapshots)
+   - Volatile artifact collection (handles, loaded modules, injected code)
+   - Secure, ephemeral memory carving (RAM-only)
+
+6. Cross-Platform & Portability
+   - Windows/macOS support (native APIs, stealth techniques)
+   - ARM/embedded support for IoT/OT/ICS
+
+7. Operational Security
+   - Secure, ephemeral configuration (encrypted in memory)
+   - Operator authentication for sensitive actions
+   - Full audit log with cryptographic integrity
+
+8. Threat Intelligence Integration
+   - YARA rules for memory scanning
+   - Integration with threat feeds (offline, signed updates)
+
+9. Performance & Reliability
+   - Adaptive scanning (dynamic throttling based on system load)
+   - Graceful degradation under attack or resource exhaustion
+
+10. Testing & CI
+   - Fuzzing, property-based testing, and continuous integration for all crates
+   - Red team/blue team simulation modules for validation

@@ -1,0 +1,18 @@
+[package]
+name = "process"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+thiserror = "1"
+serde = { version = "1", features = ["derive"] }
+memmap2 = "0.9"
+utils = { path = "../utils" }
+sha2 = "0.10"
+smallvec = "1"
+
+# For tests that use triage scoring
+
+[dev-dependencies]
+proptest = "1"

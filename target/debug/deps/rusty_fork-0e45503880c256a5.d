@@ -1,0 +1,11 @@
+/home/vboxuser/project/target/debug/deps/rusty_fork-0e45503880c256a5.d: /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/lib.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/sugar.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/fork_test.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/error.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/cmdline.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/fork.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/child_wrapper.rs
+
+/home/vboxuser/project/target/debug/deps/librusty_fork-0e45503880c256a5.rmeta: /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/lib.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/sugar.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/fork_test.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/error.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/cmdline.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/fork.rs /home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/child_wrapper.rs
+
+/home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/lib.rs:
+/home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/sugar.rs:
+/home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/fork_test.rs:
+/home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/error.rs:
+/home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/cmdline.rs:
+/home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/fork.rs:
+/home/vboxuser/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rusty-fork-0.3.0/src/child_wrapper.rs:

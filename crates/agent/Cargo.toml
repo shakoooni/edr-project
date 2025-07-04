@@ -1,0 +1,33 @@
+[package]
+name = "agent"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+log = "0.4"
+utils = { path = "../utils" }
+carving = { path = "../carving" }
+process = { path = "../process" }
+triage = { path = "../triage" }
+hex = "0.4"
+libc = { version = "0.2", optional = true }
+
+sha2 = "0.10"
+tempfile = "3"
+
+rand = "0.8"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+proptest = "1"
+sha2 = "0.10"
+tempfile = "3"
+
+criterion = "0.5"
+
+[[bin]]
+name = "quick_bench"
+path = "src/quick_bench.rs"
